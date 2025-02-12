@@ -1,6 +1,7 @@
 name: Main Build
 on:
   push:
+    branches:
       - master
 jobs:
   Deploy-Preview:
