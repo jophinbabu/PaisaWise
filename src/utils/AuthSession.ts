@@ -1,7 +1,7 @@
-"use server";
-
 import { ResponseCookie } from "next/dist/compiled/@edge-runtime/cookies";
-import { cookies } from "next/headers";
+
+import { getCookie, removeCookie, setCookie } from "./cookies";
+import { getUser } from "./getUser";
 
 const authCookieName = "auth";
 const cookieOptions: Partial<ResponseCookie> = {
@@ -13,21 +13,34 @@ const cookieOptions: Partial<ResponseCookie> = {
 };
 
 export class AuthSession {
+  
   static async setSessionToken(token: string) {
-    const cookieStore = await cookies();
-    await cookieStore.set(authCookieName, token, cookieOptions);
+
+    await setCookie(authCookieName, token, cookieOptions);
     return token;
   }
   static async getSessionToken() {
-    const cookieStore = await cookies();
-    const token = await cookieStore.get(authCookieName)?.value;
+  
+    const token = await getCookie(authCookieName);
     return token;
   }
 
   static async removeSessionToken() {
-    const cookieStore = await cookies();
-    await cookieStore.delete(authCookieName);
+
+    await removeCookie(authCookieName);
 
     return true;
+  }
+
+  static async isAuthenticated() {
+
+    return (await this.getSessionToken()) ? true : false;
+  }
+
+  static async getUser(){
+    return await getUser();
+
+
+   
   }
 }

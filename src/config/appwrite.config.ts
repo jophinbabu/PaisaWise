@@ -2,33 +2,50 @@ import * as sdk from "node-appwrite";
 
 import { AuthSession } from "@/utils/AuthSession";
 
-export class Client {
-  async get() {
-    const token = await AuthSession.getSessionToken();
-    const client = new sdk.Client()
-      .setEndpoint(process.env.APPWRITE_ENDPOINT) // Your API Endpoint
-      .setProject(process.env.APPWRITE_PROJECT_ID) // Your project ID
-      .setSession(token || ""); // The user session to authenticate with
+export const createSession = async () => {
+  const token = await AuthSession.getSessionToken();
+  const client = new sdk.Client()
+    .setEndpoint(process.env.APPWRITE_ENDPOINT) // Your API Endpoint
+    .setProject(process.env.APPWRITE_PROJECT_ID) // Your project ID
+    .setSession(token || ""); // The user session to authenticate with
 
-    const account = new sdk.Account(client);
-    const database = new sdk.Databases(client);
-    const storage = new sdk.Storage(client);
+  return {
+    get account() {
+      return new sdk.Account(client);
+    },
+    get database() {
+      return new sdk.Databases(client);
+    },
+    get storage() {
+      return new sdk.Storage(client);
+    },
+    get teams() {
+      return new sdk.Teams(client);
+    },
+    get avatar() {
+      return new sdk.Avatars(client);
+    },
+  };
+};
 
-    return { account, database, storage };
-  }
-}
+export const createAdminClient = async () => {
+  const client = new sdk.Client()
+    .setEndpoint(process.env.APPWRITE_ENDPOINT) // Your API Endpoint
+    .setProject(process.env.APPWRITE_PROJECT_ID) // Your project ID
+    .setKey(process.env.APPWRITE_PROJECT_API_KEY); // Your secret API key
 
-export class Server {
-  get() {
-    const client = new sdk.Client()
-      .setEndpoint(process.env.APPWRITE_ENDPOINT) // Your API Endpoint
-      .setProject(process.env.APPWRITE_PROJECT_ID) // Your project ID
-      .setKey(process.env.APPWRITE_PROJECT_API_KEY); // Your secret API key
-
-    const account = new sdk.Account(client);
-    const database = new sdk.Databases(client);
-    const storage = new sdk.Storage(client);
-
-    return { account, database, storage };
-  }
-}
+  return {
+    get account() {
+      return new sdk.Account(client);
+    },
+    get database() {
+      return new sdk.Databases(client);
+    },
+    get storage() {
+      return new sdk.Storage(client);
+    },
+    get teams() {
+      return new sdk.Teams(client);
+    },
+  };
+};
