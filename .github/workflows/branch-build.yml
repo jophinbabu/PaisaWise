@@ -1,0 +1,15 @@
+name: Branch Build
+on:
+  push:
+    branches-ignore:
+      - master
+jobs:
+  Deploy-Preview:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: npm install
+      - name: Creating build for main
+        run: npm run build
+ 

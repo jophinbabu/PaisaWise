@@ -1,0 +1,8 @@
+{
+    "recommendations": [
+        "dbaeumer.vscode-eslint",
+        "github.vscode-github-actions",
+        "dsznajder.es7-react-js-snippets",
+        "redhat.vscode-yaml"
+    ]
+}

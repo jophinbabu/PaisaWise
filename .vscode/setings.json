@@ -1,0 +1,54 @@
+
+{
+    "git.autofetch": true,
+    "diffEditor.ignoreTrimWhitespace": false,
+    "settingsSync.ignoredSettings": [],
+    "git.confirmSync": false,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "always"
+    },
+    "workbench.iconTheme": "vscode-icons",
+    "go.installDependenciesWhenBuilding": true,
+    "editor.formatOnSave": true,
+    "eslint.codeActionsOnSave.rules": null,
+    "[jsonc]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[typescriptreact]": {
+    
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "editor.accessibilitySupport": "off",
+    "yaml.validate": false,
+    "explorer.confirmDragAndDrop": false,
+    "npm.enableRunFromFolder": true,
+    "explorer.confirmPasteNative": false,
+    "database-client.autoSync": true,
+    "cmake.showOptionsMovedNotification": false,
+    "workbench.settings.applyToAllProfiles": [
+    
+    ],
+    "go.toolsManagement.autoUpdate": true,
+    "typescript.updateImportsOnFileMove.enabled": "always",
+    "[html]": {
+      "editor.defaultFormatter": "vscode.html-language-features"
+    },
+    "[javascript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[json]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[javascriptreact]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "javascript.updateImportsOnFileMove.enabled": "always",
+    
+    "files.autoSave": "afterDelay",
+    "security.workspace.trust.untrustedFiles": "open",
+    "[typescript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "github.copilot.editor.enableAutoCompletions": true,
+    "terminal.integrated.enableMultiLinePasteWarning": "never"
+}
