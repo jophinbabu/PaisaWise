@@ -54,12 +54,12 @@ export const useAuthStore = create<IAuthStore>()(
           user = await AuthSession.getUser()
         }catch(err){
           // check if error is type of AppwriteException
-          console.log(err);
+          // console.log(err);
           if (err instanceof AppwriteException){
             // check if error code is user not loggged in
             const type = err.type;
 
-            console.log(type);
+            // console.log(type);
             // since i am using JWT token, i will check if the error is of type 
             if (type == "user_jwt_invalid"){
                 // this means the user is not logged in
@@ -77,7 +77,7 @@ export const useAuthStore = create<IAuthStore>()(
 
         // if user is not found, then try again this will ke on trying until the user is found or isUserAuthenticated is false
         if (!user){
-          console.log("User not found");  
+          // console.log("User not found");  
           return;
             // this.rehydrate();
         }

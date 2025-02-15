@@ -1,5 +1,5 @@
 import { BookCheck } from 'lucide-react'
-import React from 'react'
+
 
 export const webInfo = {
     websiteName: "Expense Tracker",
@@ -7,7 +7,7 @@ export const webInfo = {
     websiteKeywords: "expense, tracker, management, business, company, employees",
     websiteAuthor: "Expense Tracker",
     webLogoPath: "/favicon.ico",
-    WebIcon: <BookCheck/>
+    WebIcon: BookCheck
 }
 
 

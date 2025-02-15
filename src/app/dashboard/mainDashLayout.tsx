@@ -13,7 +13,7 @@ async function MainDashLayout({
 
     const org = await getOrgs();
 
-    console.log(org);
+    // console.log(org);
 
     
     

@@ -13,7 +13,7 @@ async function NavLayout({
   
    const isOnboardingCompleted = await isOnBoardingCompleted()
 
-    console.log("isOnboardingCompleted", isOnboardingCompleted)
+    // console.log("isOnboardingCompleted", isOnboardingCompleted)
 
     if (!!isOnboardingCompleted) {
         return redirect("/dashboard")

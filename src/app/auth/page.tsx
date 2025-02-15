@@ -23,8 +23,8 @@ export default function Login() {
     const handleEmailSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         // Here you would typically send the email to your backend
-        console.log("Sending email to:",
-            email)
+        // console.log("Sending email to:",
+            // email)
 
         toast({
             title: "Auth",
@@ -59,7 +59,7 @@ export default function Login() {
         e.preventDefault()
 
         
-        console.log("Verifying OTP:", otp)
+        // console.log("Verifying OTP:", otp)
         toast({
             title: "Auth",
             description: `Verifying OTP: ${otp}`,
@@ -67,8 +67,8 @@ export default function Login() {
 
         // Here you would typically send the OTP to your backend
         // for verification
-        await verifyOTP(emailTokenInfo!.userId, otp).then((data) => {
-            console.log(data)
+        await verifyOTP(emailTokenInfo!.userId, otp).then(() => {
+            // console.log(data)
             toast({
                 title: "Auth",
                 description: "Successfully logged in",

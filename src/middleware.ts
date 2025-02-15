@@ -1,9 +1,10 @@
 import { type NextRequest, NextResponse } from "next/server";
 
+import CreateOrSetupDB from "./models/dbSetup";
 import { AuthSession } from "./utils/AuthSession";
 
 // all he sub paths of the protected paths will be protected
-export const protectedPaths = ["/dashboard","/onboarding"];
+export const protectedPaths = ["/dashboard","/onboarding","/pending-request"];
 
 export const NotAuthenticatedPath = ["/auth"];
 
@@ -12,10 +13,11 @@ export default async function Middleware(req: NextRequest) {
 
   const isAuthenticated = await AuthSession.isAuthenticated();
 
-  console.log("isAuthenticated", isAuthenticated);
+  // console.log("isAuthenticated", isAuthenticated);
+  await CreateOrSetupDB();
 
   if (protectedPaths.includes(pathname) && !isAuthenticated) {
-    console.log("redirecting to login");
+    // console.log("redirecting to login");
     return NextResponse.redirect(new URL("/auth", req.nextUrl));
   }
 
@@ -29,7 +31,7 @@ export default async function Middleware(req: NextRequest) {
     pathname.startsWith(path)
   );
   if (protectedPath && !isAuthenticated) {
-    return NextResponse.redirect(new URL("/auth/login", req.nextUrl));
+    return NextResponse.redirect(new URL("/auth", req.nextUrl));
   }
 
   // same for the not authenticated paths

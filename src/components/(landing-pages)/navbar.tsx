@@ -2,6 +2,7 @@
 import { Book, Menu } from "lucide-react"
 import Link from "next/link"
 
+import { webInfo } from "@/app/constants"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 
@@ -26,18 +27,18 @@ export function Navbar({
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-16">
                     <Link href="/" className="flex items-center space-x-2">
-                        <Book className="h-6 w-6 text-primary" />
-                        <span className="font-bold text-xl">ExpenseBook</span>
+                        <webInfo.WebIcon className="h-6 w-6 text-primary" />
+                        <span className="font-bold text-xl">{webInfo.websiteName}</span>
                     </Link>
 
                     {/* Desktop Navigation */}
                     <div className="hidden md:flex md:items-center md:space-x-6">
-                        <Link href="/features" className="text-foreground/60 hover:text-foreground">
+                        {/* <Link href="/features" className="text-foreground/60 hover:text-foreground">
                             Features
                         </Link>
                         <Link href="/pricing" className="text-foreground/60 hover:text-foreground">
                             Pricing
-                        </Link>
+                        </Link> */}
 
 
                         <BigSignInButton />
@@ -68,12 +69,12 @@ export function Navbar({
                                     </SheetTitle>
                                 </SheetHeader>
                                 <div className="flex flex-col space-y-4 mt-6">
-                                    <Link href="/features" className="text-foreground/60 hover:text-foreground py-2">
+                                    {/* <Link href="/features" className="text-foreground/60 hover:text-foreground py-2">
                                         Features
                                     </Link>
                                     <Link href="/pricing" className="text-foreground/60 hover:text-foreground py-2">
                                         Pricing
-                                    </Link>
+                                    </Link> */}
 
 
                                     <MobileAccordion />

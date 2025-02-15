@@ -1,5 +1,6 @@
 "use client"
 
+import { useRouter } from "next/navigation"
 import { useState } from "react"
 
 import { Button } from "@/components/ui/button"
@@ -21,6 +22,7 @@ export default function Onboarding() {
   const [name, setName] = useState("")
   const [accountType, setAccountType] = useState<AccountType>("company")
   const [companyCode, setCompanyCode] = useState("")
+  const router = useRouter()
 
   const handleNext = () => {
     if (step < 2) setStep(()=>step + 1)
@@ -33,8 +35,8 @@ export default function Onboarding() {
   const handleSubmit =async () => {
 
    
-    console.log(step)
-    console.log({ name, accountType, companyCode })
+    // console.log(step)
+    // console.log({ name, accountType, companyCode })
     // return;
     if (step !== 2) return
     // Handle form submission
@@ -94,7 +96,9 @@ export default function Onboarding() {
             return;
         }
 
-        await setOnboardingTrue().catch((e)=>{
+        await setOnboardingTrue().then(()=>{
+          router.push("/dashboard")
+        }).catch((e)=>{
             toast({
                 title: "Onboarding Error",
                 description: e.message,
@@ -134,7 +138,7 @@ export default function Onboarding() {
 
 
 
-    console.log({ name, accountType, companyCode })
+    // console.log({ name, accountType, companyCode })
   }
 
   return (

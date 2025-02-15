@@ -1,13 +1,12 @@
 "use client"
 
 import {
-  BookOpen,
-  Bot,
+  Building2,
+  DollarSign,
   Frame,
-  Map,
+  Home,
   PieChart,
-  Settings2,
-  SquareTerminal,
+  Sheet,
 } from "lucide-react"
 import * as React from "react"
 
@@ -23,6 +22,8 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar"
 
+
+
 // This is sample data.
 const data = {
 
@@ -34,106 +35,85 @@ const data = {
   ],
   navMain: [
     {
-      title: "Playground",
+      title: "Finances",
       url: "#",
-      icon: SquareTerminal,
+      icon: DollarSign,
       isActive: true,
       items: [
         {
-          title: "History",
-          url: "#",
+          title: "Add",
+          url: "/dashboard/cash-flow?mode=entry",
         },
         {
-          title: "Starred",
-          url: "#",
+          title: "View",
+          url: "/dashboard/cash-flow?mode=list",
         },
         {
-          title: "Settings",
-          url: "#",
-        },
+          title: "Visualize",
+          url: "/dashboard/cash-flow?mode=chart",
+        }
       ],
     },
+    
     {
-      title: "Models",
+      title: "Company",
       url: "#",
-      icon: Bot,
+      icon: Building2,
       items: [
         {
-          title: "Genesis",
-          url: "#",
+          title: "Profile",
+          url: "/dashboard/company/profile",
         },
         {
-          title: "Explorer",
-          url: "#",
-        },
-        {
-          title: "Quantum",
-          url: "#",
-        },
+          title: "Employees",
+          url: "/dashboard/company/employee",
+        }
       ],
     },
-    {
-      title: "Documentation",
-      url: "#",
-      icon: BookOpen,
-      items: [
-        {
-          title: "Introduction",
-          url: "#",
-        },
-        {
-          title: "Get Started",
-          url: "#",
-        },
-        {
-          title: "Tutorials",
-          url: "#",
-        },
-        {
-          title: "Changelog",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Settings",
-      url: "#",
-      icon: Settings2,
-      items: [
-        {
-          title: "General",
-          url: "#",
-        },
-        {
-          title: "Team",
-          url: "#",
-        },
-        {
-          title: "Billing",
-          url: "#",
-        },
-        {
-          title: "Limits",
-          url: "#",
-        },
-      ],
-    },
+    // {
+    //   title: "Settings",
+    //   url: "#",
+    //   icon: Settings2,
+    //   items: [
+    //     {
+    //       title: "General",
+    //       url: "#",
+    //     },
+    //     {
+    //       title: "Team",
+    //       url: "#",
+    //     },
+    //     {
+    //       title: "Billing",
+    //       url: "#",
+    //     },
+    //     {
+    //       title: "Limits",
+    //       url: "#",
+    //     },
+    //   ],
+    // },
   ],
   projects: [
     {
-      name: "Design Engineering",
-      url: "#",
+      name: "Home",
+      url: "/dashboard",
+      icon: Home,
+    },
+    {
+      name: "Balance Sheet",
+      url: "/dashboard/finances",
+      icon: Sheet,
+    },
+    {
+      name: "Limit Expenses",
+      url: "/dashboard/limit-expenses",
       icon: Frame,
     },
     {
-      name: "Sales & Marketing",
-      url: "#",
+      name: "Request Budget",
+      url: "/dashboard/request-budget",
       icon: PieChart,
-    },
-    {
-      name: "Travel",
-      url: "#",
-      icon: Map,
     },
   ],
 }
@@ -146,6 +126,8 @@ export function AppSidebar({ companyname,...props }: {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
+     
+        
         <TeamSwitcher teams={[
           { name: companyname },
         ]} />

@@ -41,6 +41,9 @@ export const createAdminClient = async () => {
     get database() {
       return new sdk.Databases(client);
     },
+    get Users(){
+      return new sdk.Users(client);
+    },
     get storage() {
       return new sdk.Storage(client);
     },
