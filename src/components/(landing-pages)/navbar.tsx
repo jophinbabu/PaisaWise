@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 
 import { BigGetStartedButton } from "./BigGetStartedBtn"
-import { BigSignInButton } from "./BigSigninBtn"
 import { MobileAccordion } from "./MobileAccordion"
 
 
@@ -41,7 +40,7 @@ export function Navbar({
                         </Link> */}
 
 
-                        <BigSignInButton />
+                        {/* <BigSignInButton /> */}
 
                         <BigGetStartedButton />
 

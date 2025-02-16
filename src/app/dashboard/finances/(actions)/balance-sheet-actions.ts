@@ -102,7 +102,7 @@ export async function saveBalanceSheetData(data: BalanceSheetData) {
       shareholdersEquity: JSON.stringify(data.shareholdersEquity),
     })
   }else{
-    await database.updateDocument(dbName,balanceDataCollectionId,orgdata.$id,{
+    const newSheet = {
       year: data.year,
       orgId: orgdata.$id,
       quarter: data.quarter,
@@ -111,7 +111,8 @@ export async function saveBalanceSheetData(data: BalanceSheetData) {
       currentLiabilities: JSON.stringify(data.currentLiabilities),
       nonCurrentLiabilities: JSON.stringify(data.nonCurrentLiabilities),
       shareholdersEquity: JSON.stringify(data.shareholdersEquity),
-    })
+    }
+    await database.updateDocument(dbName,balanceDataCollectionId,orgdata.$id,newSheet)
   }
 
 
