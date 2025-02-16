@@ -111,8 +111,11 @@ transactions
         flow: newEntry.flow,
         amount: newEntry.amount,
       }).then((res)=>{
+        if (!res.success){
+          throw new Error(res.message)
+        }
         setEntries(()=>[...entries, {
-          ...res
+          ...res.transaction!
         }])
         setNewEntry({ name: "", description: "", type: "asset", flow: "inflow", amount: 0 })
         toast({
@@ -136,7 +139,10 @@ transactions
   // }
 
   const handleDelete = async (id: string) => {
-    await deleteTransactions(id.toString()).then(()=>{
+    await deleteTransactions(id.toString()).then((res)=>{
+      if (!res.success){
+        throw new Error(res.message)
+      }
       setEntries(entries.filter((entry) => entry.id !== id))
     }).catch(()=>{
       toast({

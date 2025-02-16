@@ -10,10 +10,21 @@ import { setOnboardingTrue } from "./setOnBoardingTrue";
 
 
 export const verifyOrgCode = async (orgCode: string) => {
-    const {account,teams:userTeam} = await createSession();
+    try{
+        const {account,teams:userTeam} = await createSession();
     const {teams}  = await createAdminClient();
 
-    const userData =await account.get();
+    let userData;
+    try{
+        userData =await account.get();
+    }
+    catch(e){
+        if (e instanceof AppwriteException){
+            throw new Error("An error occurred")
+        }
+        throw new Error("An error occurred")
+    }
+
 
     // get team by org code
     try{
@@ -41,7 +52,7 @@ export const verifyOrgCode = async (orgCode: string) => {
     
         await teams.createMembership(team.$id, ["request"],userData.email,userData.$id);
         await setOnboardingTrue();
-        return team;
+    
     }catch(e){
         if (e instanceof AppwriteException){
             const type = e.type
@@ -55,6 +66,25 @@ export const verifyOrgCode = async (orgCode: string) => {
         throw new Error("An error occurred")
         
     }
+
+    }catch(e){
+        if (e instanceof Error){
+            return {
+                success:false,
+                message:e.message
+            }
+        }
+        return {
+            success:false,
+            message:"An error occurred"
+        }
+
+    }
+
+    return {
+        success:true
+    }
+    
 
 
 

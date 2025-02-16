@@ -91,6 +91,10 @@ export default function BudgetRequestPage() {
         amount: values.amount,
         description: values.description,
         impact: values.impact
+      }).then(res=>{
+        if (!res.success){
+          throw new Error(res.message)
+        }
       })
 
       toast({

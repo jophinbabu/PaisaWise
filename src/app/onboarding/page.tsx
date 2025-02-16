@@ -50,7 +50,11 @@ export default function Onboarding() {
     })
 
     try{
-        await updateUserName(name)
+        await updateUserName(name).then(res=>{
+          if (!res.success){
+            throw new Error(res.message)
+          }
+        })
     }catch(e){
         if (e instanceof Error){
             toast({
@@ -78,7 +82,11 @@ export default function Onboarding() {
         })
     
         try{
-            await verifyOrgCode(companyCode)
+            await verifyOrgCode(companyCode).then(res=>{
+              if (!res.success){
+                throw new Error(res.message)
+              }
+            })
         }catch(e){
             if (e instanceof Error){
                 toast({
@@ -96,7 +104,11 @@ export default function Onboarding() {
             return;
         }
 
-        await setOnboardingTrue().then(()=>{
+        await setOnboardingTrue().then((res)=>{
+          if (!res.success){
+            throw new Error(res.message)
+          }
+
           router.push("/dashboard")
         }).catch((e)=>{
             toast({

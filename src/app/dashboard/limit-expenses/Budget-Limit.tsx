@@ -57,7 +57,11 @@ export default function BudgetLimitPage({
         title: "Budget limit updating...",
         description: `New budget limit will be set to $${Number(values.budgetLimit).toLocaleString()}`,
       })
-      await setBudget(values.budgetLimit)
+      await setBudget(values.budgetLimit).then(res=>{
+        if (!res.success){
+          throw new Error(res.message)
+        }
+      })
       setCurrentLimit(values.budgetLimit)
 
       toast({

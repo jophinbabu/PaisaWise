@@ -38,7 +38,7 @@ export const createTransactions = async (data:{
     amount: number
 
 }) => {
-
+try{
     const {database} = await createSession();
     const {roles} = await getCurrentUsermembershipId();
 
@@ -59,22 +59,52 @@ export const createTransactions = async (data:{
         amount: data.amount
     })
     revalidatePath("/dashboard/cash-flow")
-    return transaction as Entry
+    return {
+        success:true,
+        transaction:transaction as Entry
+    }
+}catch(e){
+    if (e instanceof Error){
+        return {
+            success:false,
+            message:e.message
+        }
+    }
+    return {
+        success:false,
+        message:"An error occurred"
+    }
+}
+  
 
 }                                           
 
 
 export const deleteTransactions = async (id:string) => {
-
-    const {database} = await createSession();
-    const {roles} = await getCurrentUsermembershipId();
-
-    if (!roles.includes("owner")){
-        throw new Error("You are not authorized to perform this action");
+    try{
+        const {database} = await createSession();
+        const {roles} = await getCurrentUsermembershipId();
+    
+        if (!roles.includes("owner")){
+            throw new Error("You are not authorized to perform this action");
+        }
+    
+         await database.deleteDocument(dbName, financialRecordsCollectionId, id)
+        revalidatePath("/dashboard/cash-flow")
+        return {
+            success:true
+        }
+    }catch(e){
+        if (e instanceof Error){
+            return {
+                success:false,
+                message:e.message
+            }
+        }
+        return {
+            success:false,
+            message:"An error occurred"}
     }
-
-    const transaction = await database.deleteDocument(dbName, financialRecordsCollectionId, id)
-    revalidatePath("/dashboard/cash-flow")
-    return transaction
+   
 
 }

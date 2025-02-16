@@ -7,6 +7,7 @@ import { createSession } from "@/config/appwrite.config";
 import { getOrgs } from "../../(actions)/getOrgs";
 
 export const getBudget = async ()=>{
+
     const {prefs} =await getOrgs();
 
     return {
@@ -19,17 +20,33 @@ export const getBudget = async ()=>{
 
 export const setBudget = async (newLimit:string)=>{
 
-    const {$id:orgId} = await getOrgs();
-    const {teams} = await createSession();
-
-    const prefs = {
-        budget:parseFloat(newLimit)
+    try{
+        const {$id:orgId} = await getOrgs();
+        const {teams} = await createSession();
+    
+        const prefs = {
+            budget:parseFloat(newLimit)
+        }
+    
+    
+        await teams.updatePrefs(orgId,prefs);
+    
+        revalidatePath(`/dashboard/limit-expenses`);
+    
+        return {
+            success:true
+        }
+    }catch(e){
+        if (e instanceof Error){
+            return {
+                success:false,
+                message:e.message
+            }
+        }
+        return {
+            success:false,
+            message:"An error occurred"
+        }
     }
-
-
-    await teams.updatePrefs(orgId,prefs);
-
-    revalidatePath(`/dashboard/limit-expenses`);
-
-    return prefs
+  
 }

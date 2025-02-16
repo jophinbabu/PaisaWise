@@ -82,9 +82,9 @@ export async function fetchBalanceSheetData(year: string, quarter: string): Prom
   }
 }
 
-export async function saveBalanceSheetData(data: BalanceSheetData): Promise<void> {
-  // Simulate API call
-  console.log("Saving balance sheet data:", data)
+export async function saveBalanceSheetData(data: BalanceSheetData) {
+  try{
+    console.log("Saving balance sheet data:", data)
   const {database} = await createSession();
   const orgdata =await getOrgs();
 
@@ -117,5 +117,22 @@ export async function saveBalanceSheetData(data: BalanceSheetData): Promise<void
 
 
   revalidatePath("/balance-sheet")
+  return {
+    success:true
+  }
+
+  }catch(e){
+    if (e instanceof Error){
+      return {
+        success:false,
+        message:e.message
+      }
+    }
+    return {
+      success:false,
+      message:"An error occurred"}
+  }
+  // Simulate API call
+  
 }
 

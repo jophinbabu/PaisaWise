@@ -204,7 +204,25 @@ const BalanceSheet = () => {
 
   const confirmSave = async () => {
     // setSaveDataStatus("executing");
-    await saveBalanceSheetData(balanceSheetData);
+    await saveBalanceSheetData(balanceSheetData).then(res=>{
+      if (!res.success){
+        throw new Error(res.message)}
+    }).catch((e)=>{
+      if (e instanceof Error){
+        toast({
+          title: "Error",
+          description: e.message,
+          variant: "destructive",
+        });
+      }else{
+        toast({
+          title: "Error",
+          description: "An error occurred",
+          variant: "destructive",
+        });
+      }
+
+    });
     // setSaveDataStatus("idle");
 
     toast({

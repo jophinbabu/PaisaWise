@@ -20,7 +20,7 @@ export const getCompanyData = async ()=>{
 
 
 export const setCompanyData = async (data:{description:string,category:string,name:string})=>{
-
+try{
     const {$id:orgId} = await getOrgs();
     const {teams} = await createSession();
 
@@ -29,11 +29,26 @@ export const setCompanyData = async (data:{description:string,category:string,na
         category:data.category
     }
 
-    const company = await teams.updateName(orgId,data.name);
+    await teams.updateName(orgId,data.name);
 
     await teams.updatePrefs(orgId,prefs);
 
     revalidatePath(`/dashboard`);
 
-    return company
+    return {
+        success:true
+    }
+}catch(e){
+    if (e instanceof Error){
+        return {
+            success:false,
+            message:e.message
+        }
+    }
+    return {
+        success:false,
+        message:"An error occurred"
+    }
+}
+    
 }

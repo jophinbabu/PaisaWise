@@ -18,7 +18,7 @@ export const creaeNewOrg = async (name: string) => {
         throw new Error("You are already a member of an organization or have a pending request")
     }
 
-    await teams.create(ID.unique(), name, [
+    await teams.create(ID.unique(), `${name}'s company`, [
         "admin",
         "request",
         "member"

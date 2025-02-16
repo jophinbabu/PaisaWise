@@ -65,7 +65,10 @@ export default function CompanyProfilePage({
       title: "Updating Company",
       description: "Your company details are being updated...",
     })
-   await setCompanyData(data).then(()=>{
+   await setCompanyData(data).then((res)=>{
+    if (!res.success){
+      throw new Error(res.message)
+    }
     toast({
       title: "Success",
       description: "Company details updated successfully"
