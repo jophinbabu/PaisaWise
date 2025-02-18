@@ -5,6 +5,7 @@ import { ID } from 'node-appwrite';
 import { createSession } from '@/config/appwrite.config';
 
 export const sendEmail = async (email: string)=> {
+try{
     if (!emailValidator.validate(email)) {
         throw new Error("Invalid email address");
     }
@@ -15,9 +16,26 @@ export const sendEmail = async (email: string)=> {
     const emailToken = await account.createEmailToken(ID.unique(),email);
 
 
-    return emailToken;
+    return {
+        success: true,
+        message: "Email sent successfully",
+        data: emailToken
+    };
 
 
+}
+catch(e){
+    if (e instanceof Error){
+        return {
+            success: false,
+            message: e.message
+        }
 
+    }
+    return {
+        success: false,
+        message: "Failed to send email"
+    }
+}
 
 }

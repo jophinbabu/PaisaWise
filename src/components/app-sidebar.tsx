@@ -2,9 +2,9 @@
 
 import {
   Building2,
-  DollarSign,
   Frame,
   Home,
+  IndianRupee,
   PieChart,
   Sheet,
 } from "lucide-react"
@@ -37,7 +37,7 @@ const data = {
     {
       title: "Finances",
       url: "#",
-      icon: DollarSign,
+      icon: IndianRupee,
       isActive: true,
       items: [
         {

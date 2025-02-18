@@ -1,7 +1,7 @@
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
-import { DollarSign } from "lucide-react"
+import {  IndianRupee } from "lucide-react"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
@@ -55,18 +55,18 @@ export default function BudgetLimitPage({
     try {
       toast({
         title: "Budget limit updating...",
-        description: `New budget limit will be set to $${Number(values.budgetLimit).toLocaleString()}`,
+        description: `New budget limit will be set to ₹${Number(values.budgetLimit).toLocaleString()}`,
       })
       await setBudget(values.budgetLimit).then(res=>{
         if (!res.success){
           throw new Error(res.message)
         }
       })
-      setCurrentLimit(values.budgetLimit)
+      setCurrentLimit(values.budgetLimit);
 
       toast({
         title: "Budget limit updated",
-        description: `New budget limit set to $${Number(values.budgetLimit).toLocaleString()}`,
+        description: `New budget limit set to ₹${Number(values.budgetLimit).toLocaleString()}`,
       })
 
       form.reset({ budgetLimit: values.budgetLimit })
@@ -89,10 +89,10 @@ export default function BudgetLimitPage({
         <CardContent>
           <div className="space-y-8">
             <div className="flex items-center space-x-4 p-4 bg-muted rounded-lg">
-              <DollarSign className="h-6 w-6 text-muted-foreground" />
+              <IndianRupee className="h-6 w-6 text-muted-foreground" />
               <div>
                 <p className="text-sm font-medium">Current Budget Limit</p>
-                <p className="text-2xl font-bold">${Number(currentLimit).toLocaleString()}</p>
+                <p className="text-2xl font-bold">₹{Number(currentLimit).toLocaleString()}</p>
               </div>
             </div>
 

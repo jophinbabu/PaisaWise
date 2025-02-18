@@ -2,10 +2,10 @@ import { BookCheck } from 'lucide-react'
 
 
 export const webInfo = {
-    websiteName: "Expense Tracker",
+    websiteName: "PaisaWise",
     websiteDescription: "Track, manage, and analyze your business expenses with ease. Perfect for both companies and employees.",
     websiteKeywords: "expense, tracker, management, business, company, employees",
-    websiteAuthor: "Expense Tracker",
+    websiteAuthor: "PaisaWise",
     webLogoPath: "/favicon.ico",
     WebIcon: BookCheck
 }

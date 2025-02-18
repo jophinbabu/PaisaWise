@@ -32,7 +32,10 @@ export default function Login() {
         })
 
         await sendEmail(email).then((data) => {
-            setEmailTokenInfo(data)
+            if (!data.success){
+                throw new Error(data.message)
+            }
+            setEmailTokenInfo(data.data)
             // and trigger OTP generation
             setShowOTP(true)
 
@@ -67,7 +70,10 @@ export default function Login() {
 
         // Here you would typically send the OTP to your backend
         // for verification
-        await verifyOTP(emailTokenInfo!.userId, otp).then(() => {
+        await verifyOTP(emailTokenInfo!.userId, otp).then((data) => {
+            if (!data.success){
+                throw new Error(data.message)
+            }
             // console.log(data)
             toast({
                 title: "Auth",

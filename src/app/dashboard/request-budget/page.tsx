@@ -226,7 +226,7 @@ export default function BudgetRequestPage() {
                   name="amount"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Amount Required</FormLabel>
+                      <FormLabel>Amount Required ₹</FormLabel>
                       <FormControl>
                         <Input type="number" placeholder="Enter amount" min="0" step="100" {...field} />
                       </FormControl>
