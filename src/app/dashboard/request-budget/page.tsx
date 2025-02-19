@@ -90,7 +90,8 @@ export default function BudgetRequestPage() {
         purpose: values.purpose,
         amount: values.amount,
         description: values.description,
-        impact: values.impact
+        impact: values.impact,
+        departmentNames: selectedDepartments,
       }).then(res=>{
         if (!res.success){
           throw new Error(res.message)

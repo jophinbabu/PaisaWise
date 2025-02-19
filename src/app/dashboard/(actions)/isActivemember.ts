@@ -11,3 +11,10 @@ export const isActiveMember = async ()=>{
     return userMembership.roles.some((role)=>role === "member");
 
 }
+
+export const isOwner = async ()=>{
+    
+        const userMembership = await getCurrentUsermembershipId();
+    
+        return userMembership.roles.some((role)=>role === "owner");
+}

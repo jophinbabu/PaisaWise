@@ -40,6 +40,7 @@
     "next": "15.1.6",
     "next-safe-action": "^7.10.3",
     "node-appwrite": "^15.0.0",
+    "out": "file:",
     "react": "^18.0.0",
     "react-chartjs-2": "^5.3.0",
     "react-day-picker": "^8.10.1",

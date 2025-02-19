@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   Building2,
@@ -7,35 +7,32 @@ import {
   IndianRupee,
   PieChart,
   Sheet,
-} from "lucide-react"
-import * as React from "react"
+} from "lucide-react";
+import * as React from "react";
 
-import { NavMain } from "@/components/nav-main"
-import { NavProjects } from "@/components/nav-projects"
-import { NavUser } from "@/components/nav-user"
-import { TeamSwitcher } from "@/components/team-switcher"
+import { isOwner } from "@/app/dashboard/(actions)/isActivemember";
+import { NavMain } from "@/components/nav-main";
+import { NavProjects } from "@/components/nav-projects";
+import { NavUser } from "@/components/nav-user";
+import { TeamSwitcher } from "@/components/team-switcher";
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
   SidebarRail,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
 
-
-
-// This is sample data.
 const data = {
-
   teams: [
     {
       name: "",
       plan: "Primary",
-    }
+    },
   ],
   navMain: [
     {
-      title: "Finances",
+      title: "Paisawise",
       url: "#",
       icon: IndianRupee,
       isActive: true,
@@ -45,16 +42,34 @@ const data = {
           url: "/dashboard/cash-flow?mode=entry",
         },
         {
-          title: "View",
+          title: "History",
           url: "/dashboard/cash-flow?mode=list",
         },
         {
           title: "Visualize",
           url: "/dashboard/cash-flow?mode=chart",
-        }
+        },
       ],
     },
-    
+    {
+      title: "Balance Sheet",
+      url: "/dashboard/balancesheet",
+      icon: Sheet,
+      items: [
+        {
+          title: "Add",
+          url: "/dashboard/balancesheet?mode=entry",
+        },
+        {
+          title: "History",
+          url: "/dashboard/balancesheet?mode=list",
+        },
+        {
+          title: "Visualize",
+          url: "/dashboard/balancesheet?mode=chart",
+        },
+      ],
+    },
     {
       title: "Company",
       url: "#",
@@ -67,43 +82,15 @@ const data = {
         {
           title: "Employees",
           url: "/dashboard/company/employee",
-        }
+        },
       ],
     },
-    // {
-    //   title: "Settings",
-    //   url: "#",
-    //   icon: Settings2,
-    //   items: [
-    //     {
-    //       title: "General",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Team",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Billing",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Limits",
-    //       url: "#",
-    //     },
-    //   ],
-    // },
   ],
   projects: [
     {
       name: "Home",
       url: "/dashboard",
       icon: Home,
-    },
-    {
-      name: "Balance Sheet",
-      url: "/dashboard/finances",
-      icon: Sheet,
     },
     {
       name: "Limit Expenses",
@@ -116,30 +103,52 @@ const data = {
       icon: PieChart,
     },
   ],
-}
+};
 
-export function AppSidebar({ companyname,...props }: {
-  companyname: string,
-  companyid: string,
-  children?: React.ReactNode
+export function AppSidebar({ companyname, ...props }: {
+  companyname: string;
+  companyid: string;
+  children?: React.ReactNode;
 } & React.ComponentProps<typeof Sidebar>) {
+  const [isOwnerUser, setIsOwnerUser] = React.useState(false);
+
+  // Check if the user is an owner
+  React.useEffect(() => {
+    async function checkOwner() {
+      const ownerStatus = await isOwner();
+      setIsOwnerUser(ownerStatus);
+    }
+    checkOwner();
+  }, []);
+
+  // Filter out "Limit Expenses" and "Employees" if the user is not an owner
+  const filteredNavMain = data.navMain.map((section) => {
+    if (section.title === "Company" && !isOwnerUser) {
+      return {
+        ...section,
+        items: section.items.filter((item) => item.title !== "Employees"),
+      };
+    }
+    return section;
+  });
+
+  const filteredProjects = isOwnerUser
+    ? data.projects // Show all projects if the user is an owner
+    : data.projects.filter((project) => project.name !== "Limit Expenses"); // Hide "Limit Expenses" for non-owners
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-     
-        
-        <TeamSwitcher teams={[
-          { name: companyname },
-        ]} />
+        <TeamSwitcher teams={[{ name: companyname }]} />
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
+        <NavMain items={filteredNavMain} />
+        <NavProjects projects={filteredProjects} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser/>
+        <NavUser />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
-  )
+  );
 }

@@ -8,15 +8,25 @@ import { budgetCollectionId } from "@/models/collections/budgetCollection";
 import { dbName } from "@/models/dbSetup";
 import { AuthSession } from "@/utils/AuthSession";
 
-import { getBudget } from "../../limit-expenses/(actions)/Budget";
+import {  specificBudget } from "../../limit-expenses/(actions)/Budget";
 
 
-export const createRequestBudget = async (data:{title:string,purpose:string,impact:string,amount:number,description:string})=>{
+export const createRequestBudget = async (data:{title:string,   purpose:string,impact:string,amount:number,description:string,departmentNames:string[]})=>{
     try{
-        const {budget} =await getBudget();
+        // gettig sum of all the departments
+        const allDeptBudget = await data.departmentNames.map(async (dept)=>{
+            const budget = await specificBudget(dept);
+            return parseFloat(budget?.limit) || 0 as number;
+        })
+
+        const resolvedBudgets = await Promise.all(allDeptBudget);
+        const total = resolvedBudgets.reduce((acc, curr) => parseFloat(String(acc)) + parseFloat(String(curr)), 0);
+
+
         const {$id} = await AuthSession.getUser();
+
     
-        if (data.amount > budget) {
+        if (data.amount > total) {
             throw new Error("Amount exceeds the budget limit");
         }
     
