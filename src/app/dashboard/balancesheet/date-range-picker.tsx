@@ -1,20 +1,32 @@
-"use client"
+"use client";
 
-import { addDays, format } from "date-fns"
-import { CalendarIcon } from "lucide-react"
-import { useState } from "react"
-import type { DateRange } from "react-day-picker"
+import { addDays, format } from "date-fns";
+import { CalendarIcon } from "lucide-react";
+import { useEffect,useState } from "react";
+import type { DateRange } from "react-day-picker";
 
-import { Button } from "@/components/ui/button"
-import { Calendar } from "@/components/ui/calendar"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
 
-export function DateRangePicker() {
-  const [date, setDate] = useState<DateRange | undefined>({
-    from: new Date(),
-    to: addDays(new Date(), 7),
-  })
+type DateRangePickerProps = {
+  onDateChange: (range: DateRange | undefined) => void;
+  selectedRange?: DateRange; // Accept selected range as prop
+};
+
+export function DateRangePicker({ onDateChange, selectedRange }: DateRangePickerProps) {
+  const [date, setDate] = useState<DateRange | undefined>(selectedRange);
+
+  // Update state when selectedRange changes (important when loading from URL)
+  useEffect(() => {
+    setDate(selectedRange);
+  }, [selectedRange]);
+
+  const handleDateChange = (newDate: DateRange | undefined) => {
+    setDate(newDate);
+    onDateChange(newDate); // Pass the selected date range to the parent
+  };
 
   return (
     <div className="grid gap-2">
@@ -45,12 +57,11 @@ export function DateRangePicker() {
             mode="range"
             defaultMonth={date?.from}
             selected={date}
-            onSelect={setDate}
+            onSelect={handleDateChange}
             numberOfMonths={2}
           />
         </PopoverContent>
       </Popover>
     </div>
-  )
+  );
 }
-

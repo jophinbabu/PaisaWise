@@ -1,6 +1,4 @@
 "use server";
-
-import { revalidatePath } from "next/cache";
 import { Query } from "node-appwrite";
 
 import { createSession } from "@/config/appwrite.config";
@@ -48,25 +46,43 @@ interface BalanceSheetEntry {
   };
   
 
-export const getBalanceSheetByDateRange = async (
+  export const getBalanceSheetByDateRange = async (
     startDate: string, 
     endDate: string
 ): Promise<{ success: boolean; data?: BalanceSheetEntry[]; message?: string }> => {
     try {
         const { database } = await createSession();
 
-        // Fetch records where createdAt falls between startDate and endDate
+        // Fetch records where $createdAt falls between startDate and endDate
         const records = await database.listDocuments(dbName, balancesheetCollectionId, [
-            Query.between("createdAt", startDate, endDate),
+            Query.between("$createdAt", startDate, endDate),
         ]);
 
+        console.log("Raw Records:", records.documents);
+
+        // Mapping raw records to BalanceSheetEntry type
+        const formattedData: BalanceSheetEntry[] = records.documents.map((doc) => ({
+            description: doc.description,
+            type: doc.type as "asset" | "liability", // Explicitly typecasting
+            flow: doc.flow as "inflow" | "outflow", // Explicitly typecasting
+            amount: Number(doc.amount), // Ensuring amount is a number
+            department: doc.departmentName, // Mapping from `departmentName`
+            name: doc.User, // Mapping from `User`
+            createdat: doc.$createdAt, // Using `$createdAt`
+        }));
+
+        console.log("Formatted Data:", formattedData);
+
         return {
-            data: records.documents, // Typecasting to BalanceSheetEntry[]
+            success: true,
+            data: formattedData,
         };
     } catch (e) {
+        console.error("Error fetching balance sheet by date range:", e);
         return {
             success: false,
             message: e instanceof Error ? e.message : "An error occurred",
         };
     }
 };
+
