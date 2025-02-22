@@ -4,107 +4,85 @@ import { revalidatePath } from "next/cache";
 import { ID } from "node-appwrite";
 
 import { createSession } from "@/config/appwrite.config";
+import { balancesheetCollectionId } from "@/models/collections/balancesheet"; // Import balancesheet collection ID
 import { financialRecordsCollectionId } from "@/models/collections/financesCollection";
 import { dbName } from "@/models/dbSetup";
+import { AuthSession } from "@/utils/AuthSession";
 
 import { getCurrentUsermembershipId } from "../../(actions)/getCurrentUserMembershipId";
 import { Entry } from "../cash";
 
-// name: "",
-// description: "",
-// type: "asset",
-// flow: "inflow",
-// amount: 0,
-
+// Fetch all transactions
 export const getTransactions = async () => {
+    const { database } = await createSession();
+    return await database.listDocuments(dbName, financialRecordsCollectionId);
+};
 
-    const {database} = await createSession();
- 
-
-    const transactions = await database.listDocuments(dbName, financialRecordsCollectionId)
-
-
-    return transactions
-
-
-}
-
-
-export const createTransactions = async (data:{
-    name: string,
-    description: string,
-    type: string,
-    flow: string,
-    amount: number
-
+// Create a new transaction and add it to balancesheet
+export const createTransactions = async (data: {
+    description: string;
+    type: string;
+    flow: string;
+    amount: number;
+    department: string;
+    name: string;
 }) => {
-try{
-    const {database} = await createSession();
-    const {roles} = await getCurrentUsermembershipId();
+    try {
+        const authData = await AuthSession.getUser();
+        const { database } = await createSession();
+        const userMembership = await getCurrentUsermembershipId();
+        const { roles, $id } = userMembership;
 
-    if (!roles.includes("owner")){
-        throw new Error("You are not authorized to perform this action");
-    }
-
-    const {$id} = await getCurrentUsermembershipId();
-
-
-    const transaction = await database.createDocument(dbName, financialRecordsCollectionId,ID.unique() ,{
-        name: data.name,
-        description: data.description,
-        type: data.type,
-        flow: data.flow,
-        memberId: $id,
-        
-        amount: data.amount
-    })
-    revalidatePath("/dashboard/cash-flow")
-    return {
-        success:true,
-        transaction:transaction as Entry
-    }
-}catch(e){
-    if (e instanceof Error){
-        return {
-            success:false,
-            message:e.message
-        }
-    }
-    return {
-        success:false,
-        message:"An error occurred"
-    }
-}
-  
-
-}                                           
-
-
-export const deleteTransactions = async (id:string) => {
-    try{
-        const {database} = await createSession();
-        const {roles} = await getCurrentUsermembershipId();
-    
-        if (!roles.includes("owner")){
+        if (!roles.includes("owner")) {
             throw new Error("You are not authorized to perform this action");
         }
-    
-         await database.deleteDocument(dbName, financialRecordsCollectionId, id)
-        revalidatePath("/dashboard/cash-flow")
-        return {
-            success:true
-        }
-    }catch(e){
-        if (e instanceof Error){
-            return {
-                success:false,
-                message:e.message
-            }
-        }
-        return {
-            success:false,
-            message:"An error occurred"}
-    }
-   
 
-}
+        // Create transaction in financialRecordsCollection
+        // const transaction = await database.createDocument(
+        //     dbName,
+        //     financialRecordsCollectionId,
+        //     ID.unique(),
+        //     {
+        //         name: data.name,
+        //         description: data.description,
+        //         type: data.type,
+        //         flow: data.flow,
+        //         memberId: $id,
+        //         departmentName: data.department,
+        //         amount: data.amount,
+        //         User: authData.name,
+        //         createdAt: new Date().toISOString(),
+        //     }
+        // );
+        // console.log("Transaction:", transaction);
+        // ✅ Also add entry to balancesheetCollection
+        await database.createDocument(
+            dbName,
+            balancesheetCollectionId, // Using the balancesheet collection
+            ID.unique(),
+            {
+                name: data.name,
+                description: data.description,
+                type: data.type,
+                flow: data.flow,
+                departmentName: data.department,
+                amount: data.amount,
+                User: authData.name,
+                createdAt: new Date().toISOString(),
+            }
+        );
+        console.log("Transaction added to balancesheet");
+        // Revalidate the cash-flow dashboard
+        revalidatePath("/dashboard/cash-flow");
+
+        return {
+            success: true,
+            transaction: transaction as Entry,
+        };
+    } catch (e) {
+        return {
+            success: false,
+            message: e instanceof Error ? e.message : "An error occurred",
+        };
+    }
+};

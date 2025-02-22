@@ -38,7 +38,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { toast } from "@/hooks/use-toast"
 
-import { createTransactions, deleteTransactions } from "./(actions)/cash-flow"
+import { createTransactions, getTransactions } from "./(actions)/cash-flow"
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, PointElement, LineElement, Title, Tooltip, Legend)
 
@@ -48,7 +48,8 @@ export interface Entry extends Models.Document {
   description: string
   type: "asset" | "liability"
   flow: "inflow" | "outflow"
-  amount: number
+  amount: number,
+  department: string
 }
 
 const ExpenseTracker = ({
@@ -76,14 +77,11 @@ transactions
     type: "asset",
     flow: "inflow",
     amount: 0,
+    department: ""
   })
   const [editingEntry, setEditingEntry] = useState<Entry | null>(null)
   const [showOnlyInflow, setShowOnlyInflow] = useState(false)
   const [showOnlyOutflow, setShowOnlyOutflow] = useState(false)
-
-  
- 
-
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -110,6 +108,7 @@ transactions
         type: newEntry.type,
         flow: newEntry.flow,
         amount: newEntry.amount,
+        department: newEntry.department
       }).then((res)=>{
         if (!res.success){
           throw new Error(res.message)
@@ -117,7 +116,7 @@ transactions
         setEntries(()=>[...entries, {
           ...res.transaction!
         }])
-        setNewEntry({ name: "", description: "", type: "asset", flow: "inflow", amount: 0 })
+        setNewEntry({ name: "", description: "", type: "asset", flow: "inflow", amount: 0, department: "" })
         toast({
           title: "Success",
           description: "Entry created successfully",
@@ -138,20 +137,20 @@ transactions
   //   setNewEntry(entry)
   // }
 
-  const handleDelete = async (id: string) => {
-    await deleteTransactions(id.toString()).then((res)=>{
-      if (!res.success){
-        throw new Error(res.message)
-      }
-      setEntries(entries.filter((entry) => entry.id !== id))
-    }).catch(()=>{
-      toast({
-        title: "Error",
-        description: "An error occurred",
-        variant: "destructive"
-      })
-    })
-  }
+  // const handleDelete = async (id: string) => {
+  //   await deleteTransactions(id.toString()).then((res)=>{
+  //     if (!res.success){
+  //       throw new Error(res.message)
+  //     }
+  //     setEntries(entries.filter((entry) => entry.id !== id))
+  //   }).catch(()=>{
+  //     toast({
+  //       title: "Error",
+  //       description: "An error occurred",
+  //       variant: "destructive"
+  //     })
+  //   })
+  // }
 
   const filteredEntries = entries.filter((entry) => {
     if (showOnlyInflow) return entry.flow === "inflow"
@@ -171,6 +170,13 @@ transactions
       },
     ],
   }
+  const profitorloss = entries.reduce((acc, entry) => {
+    if (entry.flow === "inflow") {
+        return acc + entry.amount
+        } else {
+        return acc - entry.amount
+        }
+    }, 0)
 
   const chartOptions = {
     responsive: true,
@@ -187,7 +193,7 @@ transactions
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Expense Tracker</h1>
+      <h1 className="text-2xl font-bold mb-4">Balance Sheet</h1>
       <Tabs defaultValue={mode}>
         <TabsList>
           <TabsTrigger value="entry">New Entry</TabsTrigger>
@@ -240,6 +246,22 @@ transactions
                     <SelectItem value="outflow">Outflow</SelectItem>
                   </SelectContent>
                 </Select>
+                <Select
+                  name="department"
+                  onValueChange={(value) => handleSelectChange("department", value)}
+                  value={newEntry.department}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="department" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="department1">department1</SelectItem>
+                    <SelectItem value="department2">department2</SelectItem>
+                    <SelectItem value="department3">department3</SelectItem>
+                    <SelectItem value="department4">department4</SelectItem>
+                    <SelectItem value="department5">department5</SelectItem>
+                  </SelectContent>
+                </Select>
                 <Input
                   name="amount"
                   type="number"
@@ -287,6 +309,7 @@ transactions
                     <TableHead>Type</TableHead>
                     <TableHead>Flow</TableHead>
                     <TableHead>Amount</TableHead>
+                    <TableHead>Department</TableHead>
                     <TableHead>Actions</TableHead>
                   </TableRow>
                 </TableHeader>
@@ -298,6 +321,7 @@ transactions
                       <TableCell>{entry.type}</TableCell>
                       <TableCell>{entry.flow}</TableCell>
                       <TableCell>{entry.amount}</TableCell>
+                      <TableCell>{entry.departmentName}</TableCell>
                       <TableCell>
                         <Dialog>
                           <DialogTrigger asChild>
@@ -343,6 +367,22 @@ transactions
                                 </SelectContent>
                               </Select>
                               <Select
+                                name="department"
+                                onValueChange={(value) => handleSelectChange("department", value)}
+                                value={newEntry.type}
+                              >
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Select type" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="department1">department1</SelectItem>
+                                  <SelectItem value="department2">department2</SelectItem>
+                                  <SelectItem value="department3">department3</SelectItem>
+                                  <SelectItem value="department4">department4</SelectItem>
+                                  <SelectItem value="department5">department5</SelectItem>
+                                </SelectContent>
+                              </Select>
+                              <Select
                                 name="flow"
                                 onValueChange={(value) => handleSelectChange("flow", value)}
                                 value={newEntry.flow}
@@ -384,9 +424,9 @@ transactions
                             </AlertDialogHeader>
                             <AlertDialogFooter>
                               <AlertDialogCancel>Cancel</AlertDialogCancel>
-                              <AlertDialogAction onClick={() => handleDelete(entry.id)}>
+                              {/* <AlertDialogAction onClick={() => handleDelete(entry.id)}>
                                 Delete
-                              </AlertDialogAction>
+                              </AlertDialogAction> */}
                             </AlertDialogFooter>
                           </AlertDialogContent>
                         </AlertDialog>
@@ -409,6 +449,15 @@ transactions
               </div>
               <div className="h-[400px] mt-8">
                 <Line data={chartData} options={chartOptions} />
+              </div>
+              <div>
+                <h2 className="text-2xl font-bold mt-8">Profit or Loss</h2>
+                <div className="flex items-center space-x-4">
+                  <p className="text-xl font-bold">Total:</p>
+                  <p className={`text-xl ${profitorloss >= 0 ? "text-green-500" : "text-red-500"}`}>
+                    ₹{Math.abs(profitorloss).toLocaleString()}
+                  </p>
+                </div>
               </div>
             </CardContent>
           </Card>
@@ -443,7 +492,4 @@ export default function CashPage({
   <ExpenseTracker mode={mode as "entry" | "list" | "chart"} transactions={transactions}/>
   
   </>)
-
 }
-
-

@@ -33,6 +33,7 @@ export async function BudgetDataCollectionCreate() {
       database.createStringAttribute(dbName, collectionId, "departmentName", 255, true),
       database.createStringAttribute(dbName, collectionId, "orgId", 255, true),
       database.createIntegerAttribute(dbName, collectionId, "budgetAmount", true),
+      
     ]);
 
     // Create indexes for the BudgetData collection

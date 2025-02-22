@@ -57,16 +57,8 @@ const data = {
       icon: Sheet,
       items: [
         {
-          title: "Add",
-          url: "/dashboard/balancesheet?mode=entry",
-        },
-        {
-          title: "History",
-          url: "/dashboard/balancesheet?mode=list",
-        },
-        {
-          title: "Visualize",
-          url: "/dashboard/balancesheet?mode=chart",
+          title: "View Balance Sheet",
+          url: "/dashboard/balancesheet",
         },
       ],
     },
@@ -102,6 +94,12 @@ const data = {
       url: "/dashboard/request-budget",
       icon: PieChart,
     },
+    {
+      name: "Request History",
+      url: "/dashboard/requesthistory",
+      icon: PieChart,
+      adminOnly: true,
+    },
   ],
 };
 
@@ -112,7 +110,6 @@ export function AppSidebar({ companyname, ...props }: {
 } & React.ComponentProps<typeof Sidebar>) {
   const [isOwnerUser, setIsOwnerUser] = React.useState(false);
 
-  // Check if the user is an owner
   React.useEffect(() => {
     async function checkOwner() {
       const ownerStatus = await isOwner();
@@ -121,7 +118,6 @@ export function AppSidebar({ companyname, ...props }: {
     checkOwner();
   }, []);
 
-  // Filter out "Limit Expenses" and "Employees" if the user is not an owner
   const filteredNavMain = data.navMain.map((section) => {
     if (section.title === "Company" && !isOwnerUser) {
       return {
@@ -133,8 +129,8 @@ export function AppSidebar({ companyname, ...props }: {
   });
 
   const filteredProjects = isOwnerUser
-    ? data.projects // Show all projects if the user is an owner
-    : data.projects.filter((project) => project.name !== "Limit Expenses"); // Hide "Limit Expenses" for non-owners
+    ? data.projects
+    : data.projects.filter((project) => project.name !== "Limit Expenses");
 
   return (
     <Sidebar collapsible="icon" {...props}>
