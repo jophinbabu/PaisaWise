@@ -13,14 +13,22 @@ export async function balancesheetCreate() {
   try {
     const { database } = await createAdminClient();
 
-    // ✅ Create the collection
-    await database.createCollection(dbName, collectionId, collectionName);
-    console.log("Collection created. Waiting for stabilization...");
+    // Create the Balancesheetreal collection
+    await database.createCollection(
+      dbName,
+      collectionId,
+      collectionName,
+      [
+        Permission.read("any"),
+        Permission.write("users"),
+        Permission.update("users"),
+        Permission.delete("users"),
+      ],
+      undefined,
+      true
+    );
 
-    // ✅ Wait for collection creation
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-
-    // ✅ Add attributes (removed default value from `createdAt`)
+    // Create attributes for the Balancesheetreal collection
     await Promise.all([
       database.createStringAttribute(dbName, collectionId, "name", 100, true),
       database.createStringAttribute(dbName, collectionId, "description", 500, false),
@@ -29,35 +37,21 @@ export async function balancesheetCreate() {
       database.createFloatAttribute(dbName, collectionId, "amount", true),
       database.createStringAttribute(dbName, collectionId, "departmentName", 100, false),
       database.createStringAttribute(dbName, collectionId, "User", 100, false),
-      database.createDatetimeAttribute(dbName, collectionId, "createdAt", true),
+      database.createDatetimeAttribute(dbName, collectionId, "createdAt", true, Date.now().toLocaleString()),
+      database.createStringAttribute(dbName, collectionId, "memberId", 100, true),
     ]);
 
-    console.log("Attributes added. Waiting for stabilization...");
-
-    // ✅ Wait for attributes to be fully processed
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-
-    // ✅ Fix incorrect attribute names in indexes
+    // Create indexes for the Balancesheetreal collection
     await Promise.all([
+      database.createIndex(dbName, collectionId, "memberId", IndexType.Key, ["memberId"], ["ASC"]),
       database.createIndex(dbName, collectionId, "type", IndexType.Key, ["type"], ["ASC"]),
       database.createIndex(dbName, collectionId, "flow", IndexType.Key, ["flow"], ["ASC"]),
       database.createIndex(dbName, collectionId, "departmentName", IndexType.Key, ["departmentName"], ["ASC"]),
       database.createIndex(dbName, collectionId, "User", IndexType.Key, ["User"], ["DESC"]),
     ]);
 
-    console.log("Indexes added successfully!");
-
-    // ✅ Set correct permissions
-    await database.updatePermissions(dbName, collectionId, [
-      Permission.read("any"),
-      Permission.write("user:$id"),
-      Permission.update("user:$id"),
-      Permission.delete("user:$id"),
-    ]);
-
-    console.log("Permissions set successfully!");
-
+    console.log("Balancesheetreal collection created successfully!");
   } catch (e) {
-    console.error("Failed to create financial records collection:", e);
+    console.error("Failed to create balancesheet collection:", e);
   }
 }

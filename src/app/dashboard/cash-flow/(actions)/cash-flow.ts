@@ -69,6 +69,7 @@ export const createTransactions = async (data: {
                 amount: data.amount,
                 User: authData.name,
                 createdAt: new Date().toISOString(),
+                memberId: $id,
             }
         );
         console.log("Transaction added to balancesheet");

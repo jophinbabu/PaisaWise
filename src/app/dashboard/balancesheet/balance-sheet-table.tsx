@@ -1,14 +1,11 @@
 "use client"
 
-import { usePDF } from "@react-pdf/renderer"
 import { format } from "date-fns"
 import { Download } from "lucide-react"
 import { useState } from "react"
 
 import { formatIndianCurrency } from "@/app/lib/utils"
 import { Button } from "@/components/ui/button"
-
-import { BalanceSheetPDF } from "./balance-sheet-pdf"
 
 interface BalanceSheetEntry {
   description: string
@@ -26,9 +23,10 @@ interface BalanceSheetTableProps {
 
 export function BalanceSheetTable({ initialData }: BalanceSheetTableProps) {
   const [data] = useState(initialData)
-  const [instance, updateInstance] = usePDF({
-    document: <BalanceSheetPDF data={data} />,
-  })
+
+  const handlePrint = () => {
+    window.print()
+  }
 
   const inflow = data.filter((item) => item.type === "asset")
   const outflow = data.filter((item) => item.type === "liability")
@@ -45,18 +43,14 @@ export function BalanceSheetTable({ initialData }: BalanceSheetTableProps) {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-end">
-        <Button
-          variant="outline"
-          size="sm"
-          className="ml-auto"
-          onClick={() => updateInstance()}
-          disabled={instance.loading}
-        >
+      {/* Download PDF Button (Hidden in Print Mode) */}
+      <div className="flex justify-end print:hidden">
+        <Button variant="outline" size="sm" className="ml-auto print:hidden" onClick={handlePrint}>
           <Download className="mr-2 h-4 w-4" />
           Download PDF
         </Button>
       </div>
+
       <div className="grid md:grid-cols-2 gap-6">
         {/* Assets Section */}
         <div className="border rounded-lg p-4">
@@ -127,4 +121,3 @@ export function BalanceSheetTable({ initialData }: BalanceSheetTableProps) {
     </div>
   )
 }
-

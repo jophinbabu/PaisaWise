@@ -1,5 +1,4 @@
 "use server";
-
 import { revalidatePath } from "next/cache";
 import { ID } from "node-appwrite";
 
@@ -8,10 +7,13 @@ import { balancesheetCollectionId } from "@/models/collections/balancesheet";
 import { budgetCollectionId } from "@/models/collections/budgetCollection";
 import { dbName } from "@/models/dbSetup";
 
+import { getCurrentUsermembershipId } from "../../(actions)/getCurrentUserMembershipId";
+
+
+const { $id } = await getCurrentUsermembershipId();
 export const getRequestBudgets = async () => {
     try {
         const { database } = await createSession();
-
         const budgets = await database.listDocuments(dbName, budgetCollectionId);
 
         return {
@@ -55,7 +57,7 @@ export const updateBudgetApproval = async (budgetId: string, approved: boolean) 
                     departmentName: budget.involvedDepartments.join(", "), // Save departments as a comma-separated string
                     amount: budget.amountRequired,
                     User: budget.memberId, // The user who requested
-                    createdAt: new Date().toISOString(),
+                    memberId: $id,
                 }
             );
             if (!newentry) {
