@@ -10,9 +10,10 @@ import { dbName } from "@/models/dbSetup";
 import { getCurrentUsermembershipId } from "../../(actions)/getCurrentUserMembershipId";
 
 
-const { $id } = await getCurrentUsermembershipId();
+
 export const getRequestBudgets = async () => {
     try {
+
         const { database } = await createSession();
         const budgets = await database.listDocuments(dbName, budgetCollectionId);
 
@@ -29,6 +30,7 @@ export const getRequestBudgets = async () => {
 };
 export const updateBudgetApproval = async (budgetId: string, approved: boolean) => {
     try {
+        const { $id } = await getCurrentUsermembershipId();
         const { database } = await createSession();
 
         // Get the budget request details

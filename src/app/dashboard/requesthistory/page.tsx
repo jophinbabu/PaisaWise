@@ -5,11 +5,12 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Toaster } from "@/components/ui/toaster"
 
 import { getRequestBudgets } from "./(action)/viewrequest"
-import { BudgetDetailsDialog } from "./budget-details"
+import { BudgetDetailsDialog, BudgetDetailsDialogProps } from "./budget-details"
 import { BudgetActions } from "./budgetactions"
 
 export default async function BudgetsPage() {
   const { success, budgets } = await getRequestBudgets()
+  console.log("budgets", budgets)
 
   if (!success || !budgets) {
     return (
@@ -67,7 +68,7 @@ export default async function BudgetsPage() {
                     </TableCell>
                     <TableCell>
                       <div className="flex items-center gap-2">
-                        <BudgetDetailsDialog budget={budget} />
+                        <BudgetDetailsDialog budget={budget as unknown as BudgetDetailsDialogProps["budget"]} />
                         <BudgetActions budgetId={budget.$id} isApproved={budget.approved} />
                       </div>
                     </TableCell>

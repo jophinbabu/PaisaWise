@@ -30,7 +30,7 @@ export function BudgetActions({ budgetId, isApproved }: BudgetActionsProps) {
       } else {
         throw new Error(result.message)
       }
-    } catch (error) {
+    } catch{
       toast({
         title: "Error",
         description: "Failed to update budget approval status",

@@ -37,7 +37,7 @@ export async function balancesheetCreate() {
       database.createFloatAttribute(dbName, collectionId, "amount", true),
       database.createStringAttribute(dbName, collectionId, "departmentName", 100, false),
       database.createStringAttribute(dbName, collectionId, "User", 100, false),
-      database.createDatetimeAttribute(dbName, collectionId, "createdAt", true, Date.now().toLocaleString()),
+      database.createDatetimeAttribute(dbName, collectionId, "createdAt", true,(new Date (Date.now())).toISOString()),
       database.createStringAttribute(dbName, collectionId, "memberId", 100, true),
     ]);
 

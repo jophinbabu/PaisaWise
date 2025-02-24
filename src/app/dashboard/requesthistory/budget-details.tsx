@@ -13,7 +13,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 
-interface BudgetDetailsDialogProps {
+export interface BudgetDetailsDialogProps {
   budget: {
     title: string
     purpose: string
