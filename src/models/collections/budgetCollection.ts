@@ -1,3 +1,4 @@
+// import { create } from "domain";
 import { IndexType, Permission } from "node-appwrite";
 
 import { createAdminClient } from "@/config/appwrite.config";
@@ -67,6 +68,19 @@ export async function BudgetRequestsCollectionCreate() {
         500,
         false
       ),
+      database.createBooleanAttribute(
+        dbName,
+        collectionId,
+        "approved",
+        true,
+      ),
+      database.createDatetimeAttribute(
+        dbName,
+        collectionId,
+        "createdat",
+        true,
+        new Date().toISOString()
+      ),
     ]);
 
     // Create indexes for the BudgetRequests collection
@@ -77,6 +91,14 @@ export async function BudgetRequestsCollectionCreate() {
         IndexType.Key,
         ["memberId"],
         ["ASC"]
+      )
+    await database.createIndex(
+        dbName,
+        collectionId,
+        "createdat",
+        IndexType.Key,
+        ["createdat"],
+        ["DESC"]
       )
 
     // await database.createIndex(

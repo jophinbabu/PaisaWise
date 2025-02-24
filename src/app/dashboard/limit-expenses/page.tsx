@@ -1,15 +1,17 @@
-import React from 'react'
+import React from "react";
 
-import { getBudget } from './(actions)/Budget';
-import BudgetLimitPage from './Budget-Limit'
+import { getBudget } from "./(actions)/Budget";
+import BudgetLimitPage from "./Budget-Limit";
 
 async function Page() {
-    const budget = await getBudget();
+  // Dummy data for budgetLimits
+  const budget = await getBudget();
+
   return (
-<>
-<BudgetLimitPage budgetLimit={budget.budget}/>
-</>
-  )
+    <>
+      <BudgetLimitPage budgetLimits={budget} />
+    </>
+  );
 }
 
-export default Page
+export default Page;

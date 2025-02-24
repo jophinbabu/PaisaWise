@@ -4,7 +4,8 @@ import CreateOrSetupDB from "./models/dbSetup";
 import { AuthSession } from "./utils/AuthSession";
 
 // all he sub paths of the protected paths will be protected
-export const protectedPaths = ["/dashboard","/onboarding","/pending-request"];
+
+export const protectedPaths = ["/dashboard","/onboarding","/pending-request","/dashboard/requesthistory"];
 
 export const NotAuthenticatedPath = ["/auth"];
 
