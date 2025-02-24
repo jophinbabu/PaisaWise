@@ -2,6 +2,7 @@
 
 import { format } from "date-fns"
 import { Download } from "lucide-react"
+import Link from "next/link"
 import { useState } from "react"
 
 import { formatIndianCurrency } from "@/app/lib/utils"
@@ -118,6 +119,11 @@ export function BalanceSheetTable({ initialData }: BalanceSheetTableProps) {
           </p>
         </div>
       </div>
+      <Button className="print:hidden">
+        <Link href="/dashboard/finances">
+       Advanced balance sheet
+       </Link>
+      </Button>
     </div>
   )
 }
