@@ -7,8 +7,6 @@ import { balancesheetCollectionId } from "@/models/collections/balancesheet";
 import { budgetCollectionId } from "@/models/collections/budgetCollection";
 import { dbName } from "@/models/dbSetup";
 
-import { getCurrentUsermembershipId } from "../../(actions)/getCurrentUserMembershipId";
-
 
 
 export const getRequestBudgets = async () => {
@@ -30,7 +28,6 @@ export const getRequestBudgets = async () => {
 };
 export const updateBudgetApproval = async (budgetId: string, approved: boolean) => {
     try {
-        const { $id } = await getCurrentUsermembershipId();
         const { database } = await createSession();
 
         // Get the budget request details
@@ -59,7 +56,7 @@ export const updateBudgetApproval = async (budgetId: string, approved: boolean) 
                     departmentName: budget.involvedDepartments.join(", "), // Save departments as a comma-separated string
                     amount: budget.amountRequired,
                     User: budget.memberId, // The user who requested
-                    memberId: $id,
+                    memberId: "fsfsdfds",
                 }
             );
             if (!newentry) {

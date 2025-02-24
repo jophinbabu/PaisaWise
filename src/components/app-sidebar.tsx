@@ -129,8 +129,11 @@ export function AppSidebar({ companyname, ...props }: {
   });
 
   const filteredProjects = isOwnerUser
-    ? data.projects
-    : data.projects.filter((project) => project.name !== "Limit Expenses");
+  ? data.projects
+  : data.projects.filter(
+      (project) => project.name !== "Limit Expenses" && project.name !== "Request History"
+    );
+
 
   return (
     <Sidebar collapsible="icon" {...props}>

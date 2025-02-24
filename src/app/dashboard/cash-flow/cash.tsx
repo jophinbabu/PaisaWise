@@ -254,11 +254,14 @@ transactions
                     <SelectValue placeholder="department" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="department1">department1</SelectItem>
-                    <SelectItem value="department2">department2</SelectItem>
-                    <SelectItem value="department3">department3</SelectItem>
-                    <SelectItem value="department4">department4</SelectItem>
-                    <SelectItem value="department5">department5</SelectItem>
+                    <SelectItem value="Engineering">Engineering</SelectItem>
+                    <SelectItem value="Marketing">Marketing</SelectItem>
+                    <SelectItem value="Sales">Sales</SelectItem>
+                    <SelectItem value="Finance">Finance</SelectItem>
+                    <SelectItem value="Human Resource">Human Resource</SelectItem>
+                    <SelectItem value="Operations">Operations</SelectItem>
+                    <SelectItem value="Research and development">Research and development</SelectItem>
+                    <SelectItem value="Customer Support">Customer Support</SelectItem>
                   </SelectContent>
                 </Select>
                 <Input
