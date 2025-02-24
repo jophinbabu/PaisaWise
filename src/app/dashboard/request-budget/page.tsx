@@ -20,14 +20,14 @@ import { cn } from "@/lib/utils"
 import { createRequestBudget } from "./(actions)/create-request-budget"
 
 const departments = [
-  { label: "Engineering", value: "engineering" },
-  { label: "Marketing", value: "marketing" },
-  { label: "Sales", value: "sales" },
-  { label: "Finance", value: "finance" },
-  { label: "Human Resources", value: "hr" },
-  { label: "Operations", value: "operations" },
-  { label: "Research & Development", value: "rd" },
-  { label: "Customer Support", value: "support" },
+  { label: "Engineering", value: "Engineering" },
+  { label: "Marketing", value: "Marketing" },
+  { label: "Sales", value: "Sales" },
+  { label: "Finance", value: "Finance" },
+  { label: "Human Resources", value: "Human Resources" },
+  { label: "Operations", value: "Operations" },
+  { label: "Research & Development", value: "Research & Development" },
+  { label: "Customer Support", value: "Customer Support" },
 ]
 
 const purposes = [

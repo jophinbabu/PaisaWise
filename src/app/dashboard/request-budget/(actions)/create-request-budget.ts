@@ -23,6 +23,7 @@ export const createRequestBudget = async (data: {
         // Getting sum of all the department budgets
         const allDeptBudget = await Promise.all(
             data.departmentNames.map(async (dept) => {
+                console.log(dept);
                 const budget = await specificBudget(dept);
                 return parseFloat(budget?.limit) || 0;
             })
@@ -63,7 +64,7 @@ export const createRequestBudget = async (data: {
                     departmentName: data.departmentNames.join(", "), // Save departments as a comma-separated string
                     amount: data.amount,
                     User: name, // The user who requested
-                    createdAt: new Date().toISOString(),
+                    memberId: $id,
                 }
             );
         }

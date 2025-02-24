@@ -22,7 +22,7 @@ export interface BalanceSheetData {
 
 export async function checkExistingData(year: string, quarter: string): Promise<boolean> {
   // Simulate API call
-  console.log("Checking existing data for year", year, "and quarter", quarter)  
+  console.log("Checking existing data for year", year, "and quarter", quarter)
   const {database} = await createSession();
   const orgdata =await getOrgs();
   const data = await database.listDocuments(dbName,balanceDataCollectionId,[

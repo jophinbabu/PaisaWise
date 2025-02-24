@@ -44,7 +44,6 @@ interface BalanceSheetEntry {
       };
     }
   };
-  
 
   export const getBalanceSheetByDateRange = async (
     startDate: string, 

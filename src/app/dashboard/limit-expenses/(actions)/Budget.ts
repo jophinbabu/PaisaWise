@@ -43,7 +43,7 @@ export const getBudget = async ()=>{
             limit:doc.budgetAmount
         }
     })
-
+    console.log("Data:",data);
 
 
 

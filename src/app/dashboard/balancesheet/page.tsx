@@ -11,11 +11,23 @@ import { getBalanceSheetByDateRange, getBalanceSheetData } from "./(actions)/bal
 import { BalanceSheetTable } from "./balance-sheet-table";
 import { DateRangePicker } from "./date-range-picker";
 
+// Define the BalanceSheetEntry interface
+interface BalanceSheetEntry {
+  description: string;
+  type: "asset" | "liability";
+  flow: "inflow" | "outflow";
+  amount: number;
+  department: string;
+  name: string;
+  createdat: string;
+}
+
 export default function BalanceSheetPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const [data, setData] = useState([]);
+  // Set the type of `data` to BalanceSheetEntry[]
+  const [data, setData] = useState<BalanceSheetEntry[]>([]);
   const [loading, setLoading] = useState(true);
 
   // Retrieve date range from URL params
@@ -44,6 +56,7 @@ export default function BalanceSheetPage() {
         response = await getBalanceSheetData();
       }
 
+      // Set the data state with the fetched data
       setData(response.success ? response.data ?? [] : []);
       setLoading(false);
     }

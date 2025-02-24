@@ -33,30 +33,31 @@ export const createTransactions = async (data: {
         const userMembership = await getCurrentUsermembershipId();
         const { roles, $id } = userMembership;
 
+        // Check if the user is authorized
         if (!roles.includes("owner")) {
             throw new Error("You are not authorized to perform this action");
         }
 
         // Create transaction in financialRecordsCollection
-        // const transaction = await database.createDocument(
-        //     dbName,
-        //     financialRecordsCollectionId,
-        //     ID.unique(),
-        //     {
-        //         name: data.name,
-        //         description: data.description,
-        //         type: data.type,
-        //         flow: data.flow,
-        //         memberId: $id,
-        //         departmentName: data.department,
-        //         amount: data.amount,
-        //         User: authData.name,
-        //         createdAt: new Date().toISOString(),
-        //     }
-        // );
-        // console.log("Transaction:", transaction);
+        const transaction = await database.createDocument(
+            dbName,
+            financialRecordsCollectionId,
+            ID.unique(),
+            {
+                name: data.name,
+                description: data.description,
+                type: data.type,
+                flow: data.flow,
+                memberId: $id,
+                departmentName: data.department,
+                amount: data.amount,
+                User: authData.name,
+            }
+        );
+        console.log("Transaction:", transaction);
+
         // ✅ Also add entry to balancesheetCollection
-        await database.createDocument(
+        const balance = await database.createDocument(
             dbName,
             balancesheetCollectionId, // Using the balancesheet collection
             ID.unique(),
@@ -68,11 +69,15 @@ export const createTransactions = async (data: {
                 departmentName: data.department,
                 amount: data.amount,
                 User: authData.name,
-                createdAt: new Date().toISOString(),
                 memberId: $id,
             }
         );
+
+        if (!balance) {
+            throw new Error("Failed to record transaction in the balance sheet");
+        }
         console.log("Transaction added to balancesheet");
+
         // Revalidate the cash-flow dashboard
         revalidatePath("/dashboard/cash-flow");
 
@@ -81,6 +86,7 @@ export const createTransactions = async (data: {
             transaction: transaction as Entry,
         };
     } catch (e) {
+        console.error("Error creating transaction:", e);
         return {
             success: false,
             message: e instanceof Error ? e.message : "An error occurred",
