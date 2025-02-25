@@ -3,6 +3,7 @@ import React from 'react'
 
 import { isOnBoardingCompleted } from '@/actions/isOnboardingCompleted';
 import { Navbar } from '@/components/(landing-pages)/navbar'
+import { AuthSession } from '@/utils/AuthSession';
 
 async function NavLayout({
   children
@@ -10,21 +11,29 @@ async function NavLayout({
   children: React.ReactNode
 }) {
   // const { divRef,remainingHeight } = useDimension();
-  
-   const isOnboardingCompleted = await isOnBoardingCompleted()
 
-    // console.log("isOnboardingCompleted", isOnboardingCompleted)
+  const isOnboardingCompleted = await isOnBoardingCompleted();
 
-    if (!!isOnboardingCompleted) {
-        return redirect("/dashboard")
-    }
+  try {
+    await AuthSession.getUser();
+  } catch {
+    await AuthSession.removeSessionToken();
+    return redirect("/auth")
+  }
 
-  
+
+  // console.log("isOnboardingCompleted", isOnboardingCompleted)
+
+  if (!!isOnboardingCompleted) {
+    return redirect("/dashboard")
+  }
+
+
 
 
   return (
     <>
-      <Navbar/>
+      <Navbar />
       <div className={`${12}px)] w-full overflow-y-auto`}>
         {children}
       </div>

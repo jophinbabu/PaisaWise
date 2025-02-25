@@ -123,7 +123,11 @@ export default function Onboarding() {
         // creating new company
 
         try {
-            await creaeNewOrg(name)
+            await creaeNewOrg(name).then(res=>{
+              if (!res.success){
+                throw new Error(res.message)
+              }
+            })
         } catch (e) {
             if (e instanceof Error) {
                 toast({
