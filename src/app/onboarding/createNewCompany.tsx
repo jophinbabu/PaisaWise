@@ -30,6 +30,10 @@ export const creaeNewOrg = async (name: string) => {
     
             throw new Error("An error occurred")
         })
+
+        return {
+            success: true
+        }
     }catch(e){
         if (e instanceof Error) {
             return {
