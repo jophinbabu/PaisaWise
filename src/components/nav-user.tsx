@@ -45,7 +45,7 @@ export function NavUser() {
                 <AvatarFallback className="rounded-lg">{name.trim().substring(0,1).toLowerCase()}</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">{name.trim().substring(0,1).toLowerCase()}</span>
+                <span className="truncate font-semibold">{name}</span>
                 <span className="truncate text-xs">{email}</span>
               </div>
               <ChevronsUpDown className="ml-auto size-4" />
