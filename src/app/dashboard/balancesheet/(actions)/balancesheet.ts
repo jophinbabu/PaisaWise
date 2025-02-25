@@ -29,7 +29,7 @@ interface BalanceSheetEntry {
         flow: doc.flow,
         amount: doc.amount,
         department: doc.departmentName, // Mapping from `departmentName`
-        name: doc.User, // Mapping from `User`
+        name: doc.name, // Mapping from `User`
         createdat: doc.$createdAt, // Using `$createdAt`
       }));
   

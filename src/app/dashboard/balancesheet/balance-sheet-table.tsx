@@ -29,8 +29,8 @@ export function BalanceSheetTable({ initialData }: BalanceSheetTableProps) {
     window.print()
   }
 
-  const inflow = data.filter((item) => item.type === "asset")
-  const outflow = data.filter((item) => item.type === "liability")
+  const inflow = data.filter((item) => item.flow === "inflow")
+  const outflow = data.filter((item) => item.flow === "outflow")
 
   const calculateTotal = (items: BalanceSheetEntry[]) => {
     return items.reduce((acc, item) => {

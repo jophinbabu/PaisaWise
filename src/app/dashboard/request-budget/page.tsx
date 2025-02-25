@@ -93,14 +93,17 @@ export default function BudgetRequestPage() {
         impact: values.impact,
         departmentNames: selectedDepartments,
       }).then(res=>{
+        console.log(res);
+        toast({
+          variant: res.approved ? "default" : "destructive",
+          title: "Request Submitted",
+          description: res.approved
+            ? "Your budget request has been submitted successfully and approved."
+            : "Your budget request has been submitted but is pending approval.",
+        });
         if (!res.success){
           throw new Error(res.message)
         }
-      })
-
-      toast({
-        title: "Request submitted",
-        description: "Your budget request has been submitted successfully",
       })
 
       form.reset()
