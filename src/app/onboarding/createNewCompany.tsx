@@ -1,4 +1,5 @@
 "use server";
+import { revalidatePath } from "next/cache";
 import { AppwriteException, ID, Query } from "node-appwrite";
 
 import { createSession } from "@/config/appwrite.config";
@@ -31,6 +32,8 @@ export const creaeNewOrg = async (name: string) => {
             throw new Error("An error occurred")
         })
 
+        revalidatePath("/onboarding");
+
         return {
             success: true
         }
@@ -49,9 +52,4 @@ export const creaeNewOrg = async (name: string) => {
         
     }
 
-
-    
-    return {
-        success:true
-    };
 }

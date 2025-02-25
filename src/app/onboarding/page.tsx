@@ -86,6 +86,10 @@ export default function Onboarding() {
               if (!res.success){
                 throw new Error(res.message)
               }
+              toast({
+                title: "Code Success",
+                description: "Your company code has been verified",
+              })
             })
         }catch(e){
             if (e instanceof Error){
@@ -109,6 +113,11 @@ export default function Onboarding() {
             throw new Error(res.message)
           }
 
+          toast({
+              title: "Onboarding Success",
+              description: "Your account has been created",
+          })
+
           router.push("/dashboard")
         }).catch((e)=>{
             toast({
@@ -121,12 +130,20 @@ export default function Onboarding() {
     
     }else{
         // creating new company
+        toast({
+            title: "Creating Company",
+            description: "Your company is being created...",
+        })
 
         try {
             await creaeNewOrg(name).then(res=>{
               if (!res.success){
                 throw new Error(res.message)
               }
+              toast({
+                title: "Company Success",
+                description: "Your company has been created",
+              })
             })
         } catch (e) {
             if (e instanceof Error) {
