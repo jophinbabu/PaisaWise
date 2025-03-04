@@ -10,7 +10,7 @@ import { BudgetActions } from "./budgetactions"
 
 export default async function BudgetsPage() {
   const { success, budgets } = await getRequestBudgets()
-  console.log("budgets", budgets)
+
 
   if (!success || !budgets) {
     return (
@@ -47,29 +47,35 @@ export default async function BudgetsPage() {
               </TableHeader>
               <TableBody>
                 {budgets.map((budget) => (
-                  <TableRow key={budget.$id}>
-                    <TableCell className="font-medium">{budget.title}</TableCell>
-                    <TableCell>{budget.purpose}</TableCell>
-                    <TableCell className="hidden md:table-cell">{budget.businessImpact}</TableCell>
+                  <TableRow key={budget.budget.$id}>
+                    <TableCell className="font-medium">{budget.budget.title}</TableCell>
+                    <TableCell>{budget.budget.purpose}</TableCell>
+                    <TableCell className="hidden md:table-cell">{budget.budget.businessImpact}</TableCell>
                     <TableCell className="hidden lg:table-cell">
                       <div className="flex flex-wrap gap-1">
-                        {budget.involvedDepartments.map((dept: string) => (
+                        {budget.budget.involvedDepartments.map((dept: string) => (
                           <Badge key={dept} variant="secondary">
                             {dept}
                           </Badge>
                         ))}
                       </div>
                     </TableCell>
-                    <TableCell>{formatIndianCurrency(budget.amountRequired)}</TableCell>
+                    <TableCell>{formatIndianCurrency(budget.budget.amountRequired)}</TableCell>
                     <TableCell>
-                      <Badge variant={budget.approved ? "success" : "secondary"}>
-                        {budget.approved ? "Approved" : "Pending"}
+                      <Badge variant={budget.budget.approved ? "success" : "secondary"}>
+                        {budget.budget.approved ? "Approved" : "Pending"}
                       </Badge>
                     </TableCell>
                     <TableCell>
                       <div className="flex items-center gap-2">
-                        <BudgetDetailsDialog budget={budget as unknown as BudgetDetailsDialogProps["budget"]} />
-                        <BudgetActions budgetId={budget.$id} isApproved={budget.approved} />
+                        {/* {
+                          JSON.stringify(budget)
+                        } */}
+                        <BudgetDetailsDialog budget={{
+                          ...budget.budget,
+                          userName: budget.user.name || "Unknown",
+                        } as unknown as BudgetDetailsDialogProps["budget"]} />
+                        <BudgetActions budgetId={budget.budget.$id} isApproved={budget.budget.approved} />
                       </div>
                     </TableCell>
                   </TableRow>

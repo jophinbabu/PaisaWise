@@ -15,6 +15,7 @@ import {
 
 export interface BudgetDetailsDialogProps {
   budget: {
+    userName: string
     title: string
     purpose: string
     businessImpact: string
@@ -50,6 +51,10 @@ export function BudgetDetailsDialog({ budget }: BudgetDetailsDialogProps) {
           <div className="grid grid-cols-4 items-center gap-4">
             <span className="font-medium">Business Impact:</span>
             <span className="col-span-3">{budget.businessImpact}</span>
+          </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <span className="font-medium">Requested By:</span>
+            <span className="col-span-3">{budget.userName}</span>
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <span className="font-medium">Departments:</span>

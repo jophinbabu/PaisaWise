@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  BadgeIndianRupee,
   Building2,
   Frame,
   Home,
@@ -92,7 +93,7 @@ const data = {
     {
       name: "Request Budget",
       url: "/dashboard/request-budget",
-      icon: PieChart,
+      icon: BadgeIndianRupee,
     },
     {
       name: "Request History",

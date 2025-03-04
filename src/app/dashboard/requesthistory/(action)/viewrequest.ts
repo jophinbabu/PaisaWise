@@ -7,6 +7,8 @@ import { balancesheetCollectionId } from "@/models/collections/balancesheet";
 import { budgetCollectionId } from "@/models/collections/budgetCollection";
 import { dbName } from "@/models/dbSetup";
 
+import { anyUser } from "../../company/employee/(actions)/getUserInfo";
+
 
 
 export const getRequestBudgets = async () => {
@@ -14,10 +16,21 @@ export const getRequestBudgets = async () => {
 
         const { database } = await createSession();
         const budgets = await database.listDocuments(dbName, budgetCollectionId);
+        const GettingMemberDetailsToo = [];
+
+        for (const budget of budgets.documents) {
+            const user = await anyUser(budget.memberId);
+            GettingMemberDetailsToo.push({
+                user,
+                budget,
+            });
+        }
+
+       
 
         return {
             success: true,
-            budgets: budgets.documents, // Returning only documents
+            budgets: GettingMemberDetailsToo, // Returning only documents
         };
     } catch (e) {
         return {
