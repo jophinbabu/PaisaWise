@@ -1,35 +1,20 @@
-import { Bell,Camera, Clock, CreditCard, PieChart, Receipt } from "lucide-react"
+import { BarChart, CheckCircle, TrendingUp } from "lucide-react"
 
 const features = [
   {
-    name: "Quick Receipt Capture",
-    description: "Snap and upload receipts instantly with our mobile-friendly interface",
-    icon: Camera,
+    name: "Smart Approval",
+    description: "This is where approvals happen fast. Our process saves you time and keeps things moving. With automatic steps and instant updates, getting approvals is simple and smooth.",
+    icon: CheckCircle,
   },
   {
-    name: "Real-time Tracking",
-    description: "Monitor expenses as they happen with instant updates and notifications",
-    icon: Clock,
+    name: "Balance Sheets",
+    description: "See a clear snapshot of your finances in one place. Track assets, liabilities, and equity with up-to-date insights that keep you informed and in control.",
+    icon: BarChart,
   },
   {
-    name: "Advanced Analytics",
-    description: "Get detailed insights into spending patterns and expense categories",
-    icon: PieChart,
-  },
-  {
-    name: "Smart Categories",
-    description: "Automatically categorize expenses for better organization",
-    icon: Receipt,
-  },
-  {
-    name: "Card Integration",
-    description: "Connect your corporate cards for automatic expense tracking",
-    icon: CreditCard,
-  },
-  {
-    name: "Instant Notifications",
-    description: "Stay updated with approval status and reimbursement notifications",
-    icon: Bell,
+    name: "Forecasting",
+    description: "Our streamlined process delivers accurate predictions, fast. With automated data updates and real-time insights, staying ahead of trends is simple and efficient.",
+    icon: TrendingUp,
   },
 ]
 

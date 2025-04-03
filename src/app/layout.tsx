@@ -21,7 +21,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "TrajectoryBook",
+  title: "PaisaWise",
   description: "Your alll in one tool",
 };
 

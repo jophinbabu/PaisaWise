@@ -1,4 +1,4 @@
-import { BookCheck } from 'lucide-react'
+import { Wallet2 } from 'lucide-react'
 
 
 export const webInfo = {
@@ -7,7 +7,7 @@ export const webInfo = {
     websiteKeywords: "expense, tracker, management, business, company, employees",
     websiteAuthor: "PaisaWise",
     webLogoPath: "/favicon.ico",
-    WebIcon: BookCheck
+    WebIcon: Wallet2
 }
 
 

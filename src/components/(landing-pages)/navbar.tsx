@@ -1,5 +1,6 @@
 "use client"
 import { Book, Menu } from "lucide-react"
+import { Changa } from "next/font/google"
 import Link from "next/link"
 
 import { webInfo } from "@/app/constants"
@@ -9,44 +10,27 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/co
 import { BigGetStartedButton } from "./BigGetStartedBtn"
 import { MobileAccordion } from "./MobileAccordion"
 
-
-
-
-
-
+const changa = Changa({ subsets: ["latin"], weight: "700" }) // Load Changa font
 
 export function Navbar({
     ref
-}:{
+}: {
     ref?: React.RefObject<HTMLDivElement>
 }) {
-
     return (
         <nav className="border-b bg-background sticky top-0" ref={ref}>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-16">
                     <Link href="/" className="flex items-center space-x-2">
-                        <webInfo.WebIcon className="h-6 w-6 text-primary" />
-                        <span className="font-bold text-xl">{webInfo.websiteName}</span>
+                        <webInfo.WebIcon className="h-7 w-7 text-primary" />
+                        <span className={`font-bold text-2xl ${changa.className}`}>
+                            {webInfo.websiteName}
+                        </span>
                     </Link>
 
                     {/* Desktop Navigation */}
                     <div className="hidden md:flex md:items-center md:space-x-6">
-                        {/* <Link href="/features" className="text-foreground/60 hover:text-foreground">
-                            Features
-                        </Link>
-                        <Link href="/pricing" className="text-foreground/60 hover:text-foreground">
-                            Pricing
-                        </Link> */}
-
-
-                        {/* <BigSignInButton /> */}
-
                         <BigGetStartedButton />
-
-
-
-
                     </div>
 
                     {/* Mobile Navigation */}
@@ -62,23 +46,15 @@ export function Navbar({
                                 <SheetHeader>
                                     <SheetTitle>
                                         <div className="flex items-center space-x-2">
-                                            <Book className="h-6 w-6 text-primary" />
-                                            <span className="font-bold text-xl">ExpenseBook</span>
+                                            <Book className="h-7 w-7 text-primary" />
+                                            <span className={`font-bold text-2xl ${changa.className}`}>
+                                                ExpenseBook
+                                            </span>
                                         </div>
                                     </SheetTitle>
                                 </SheetHeader>
                                 <div className="flex flex-col space-y-4 mt-6">
-                                    {/* <Link href="/features" className="text-foreground/60 hover:text-foreground py-2">
-                                        Features
-                                    </Link>
-                                    <Link href="/pricing" className="text-foreground/60 hover:text-foreground py-2">
-                                        Pricing
-                                    </Link> */}
-
-
                                     <MobileAccordion />
-
-
                                 </div>
                             </SheetContent>
                         </Sheet>

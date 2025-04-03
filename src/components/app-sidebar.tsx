@@ -3,11 +3,13 @@
 import {
   BadgeIndianRupee,
   Building2,
+  BarChart,
   Frame,
   Home,
   IndianRupee,
   PieChart,
   Sheet,
+  Wallet2, // Added Wallet Icon
 } from "lucide-react";
 import * as React from "react";
 
@@ -33,7 +35,7 @@ const data = {
   ],
   navMain: [
     {
-      title: "Paisawise",
+      title: "Entry Logs",
       url: "#",
       icon: IndianRupee,
       isActive: true,
@@ -95,6 +97,12 @@ const data = {
       url: "/dashboard/request-budget",
       icon: BadgeIndianRupee,
     },
+    // Add this to your navigation items array
+    {
+    name: 'Forecast',
+    url: '/dashboard/forecast',
+    icon: BarChart, // Import from your icon library
+    },
     {
       name: "Request History",
       url: "/dashboard/requesthistory",
@@ -130,15 +138,22 @@ export function AppSidebar({ companyname, ...props }: {
   });
 
   const filteredProjects = isOwnerUser
-  ? data.projects
-  : data.projects.filter(
-      (project) => project.name !== "Limit Expenses" && project.name !== "Request History"
+    ? data.projects
+    : data.projects.filter(
+      (project) =>
+        project.name !== "Limit Expenses" && project.name !== "Request History"
     );
-
 
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
+        {/* PaisaWise Logo & Name */}
+        <div className="flex items-center gap-2 px-3 py-2">
+          <Wallet2 className="w-6 h-6 text-primary" /> {/* Wallet Icon */}
+          <span className="text-lg font-semibold">PaisaWise</span> {/* Name */}
+        </div>
+
+        {/* Company Name Below */}
         <TeamSwitcher teams={[{ name: companyname }]} />
       </SidebarHeader>
       <SidebarContent>
@@ -151,4 +166,4 @@ export function AppSidebar({ companyname, ...props }: {
       <SidebarRail />
     </Sidebar>
   );
-}
+}      
