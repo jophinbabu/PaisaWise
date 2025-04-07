@@ -93,6 +93,8 @@ def train_tree_models(X_train, y_train_revenue, y_train_expenditure):
     }
     
     trained_models = {}
+    # Store individual RF models for separate saving
+    rf_models = {}
     
     for target_name, y_train in [('Revenue', y_train_revenue), ('Expenditure', y_train_expenditure)]:
         target_models = {}
@@ -121,10 +123,14 @@ def train_tree_models(X_train, y_train_revenue, y_train_expenditure):
             best_model = grid_search.best_estimator_
             print(f"Best parameters for {model_name}: {grid_search.best_params_}")
             target_models[model_name] = best_model
+            
+            # Store RF models separately
+            if model_name == 'Random Forest':
+                rf_models[target_name] = best_model
         
         trained_models[target_name] = target_models
     
-    return trained_models
+    return trained_models, rf_models
 
 def evaluate_models(models, X_test, y_test_revenue, y_test_expenditure):
     """Evaluate trained models on test data"""
@@ -295,7 +301,7 @@ def main():
     
     # Train tree-based models
     print("\nTraining tree-based models...")
-    tree_models = train_tree_models(X_train, y_train_revenue, y_train_expenditure)
+    tree_models, rf_models = train_tree_models(X_train, y_train_revenue, y_train_expenditure)
     
     # Combine all models
     all_models = {
@@ -314,9 +320,17 @@ def main():
     )
     
     # Save best models
+    print("\nSaving best models...")
     save_best_models(all_models, best_revenue_model, best_expenditure_model)
+    
+    # Save Random Forest models
     print("\nSaving Random Forest models...")
     os.makedirs('../model/random_forest', exist_ok=True)
+    
+    # Extract RF models from the rf_models dictionary
+    rf_revenue = rf_models['Revenue']
+    rf_expenditure = rf_models['Expenditure']
+    
     joblib.dump(rf_revenue, '../model/random_forest/revenue_model_rf.joblib')
     joblib.dump(rf_expenditure, '../model/random_forest/expenditure_model_rf.joblib')
     
